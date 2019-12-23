@@ -14,30 +14,36 @@ const DisplayHeader = ({text}) => (
 )
 
 
-const Statistics = ({good, neutral, bad, all}) => {
-    
+const Statistics = ({good, neutral, bad }) => {
+    const all = good + neutral + bad 
+    const avg = (1 * good + (-1) * bad) / all
+    const positivePercentage = good * 100 / all
+
     if (all === 0){
         return (
             <>
-                <h2>statistics</h2>
                 <p>No feedback given </p>
             </>
         )
     }
-    
+
     return (
         <>
-            <h2>statistics</h2>
-            <p>good {good}</p>
-            <p>neutral {neutral}</p>
-            <p>bad {bad}</p>
-            <p>all {all}</p>
-            <p>average {(1 * good + (-1) * bad) / all}</p>
-            <p>positive {good * 100 / all }%</p>    
+            <Statistic text='good' value={good}/>
+            <Statistic text='neutral' value={neutral}/>
+            <Statistic text='bad' value={bad}/>
+            <Statistic text='all' value={all}/>
+            <Statistic text='average' value={avg}/>
+            <Statistic text='positive percentage' value={positivePercentage} />     
         </>
     )
-    }
+}
 
+const Statistic = ({text, value}) => (
+    <>
+        <p>{text} {value}</p>
+    </>
+)
 
 
 const App = (props) => {
@@ -46,7 +52,6 @@ const App = (props) => {
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
 
-  const all = good + neutral + bad 
 
   //here comes the event handlers
   const handleGoodClick = () => setGood(good + 1)
@@ -67,7 +72,8 @@ const App = (props) => {
         <Button onClick={handleGoodClick} text='good'/>
         <Button onClick={handleNeutralClick} text='neutral'/>
         <Button onClick={handleBadClick} text='bad'/>
-        <Statistics good={good} neutral={neutral} bad={bad} all={all}/>
+        <DisplayHeader text='statistics'/>
+        <Statistics good={good} neutral={neutral} bad={bad} />
     </div>
   )
 }
