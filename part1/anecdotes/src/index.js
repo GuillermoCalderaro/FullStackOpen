@@ -16,18 +16,33 @@ const anecdotes = [
     'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.'
   ]
 
+
   
 const App = (props) => {
   const [selected, setSelected] = useState(0)
+  //I hardCoded the fisical dimension of tne votes array. A terrible idea but
+  //didn`t got the time to sort it up 
+  const [votes, setVote] = useState([0,0,0,0,0,0 ])
 
+
+console.log(votes)
+  //the event Handlers
   const generateRandomNum = () => {
       setSelected(parseInt(Math.random() * 6))
   }  
 
+  const voteAnecdote = () => {
+        console.log(votes)
+        const aux = votes
+        aux[selected]++ 
+        setVote(aux)
+  }
 
   return (
     <>
         <DisplayAnecdote text={props.anecdotes[selected]}/>
+        <p>has {votes[selected]} votes</p>
+        <button onClick={voteAnecdote}>vote for me!</button>
         <button onClick={generateRandomNum}>Click for a random anecdote!</button>
     </>
 )
