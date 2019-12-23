@@ -7,29 +7,37 @@ const Button = ({ onClick, text }) => (
         </button>
 )
 
-/*
-        <Button onCLick={() => setGood(good + 1)} text='good'/>
-        <Button onCLick={handleNeutralClick} text='neutral'/>
-        <Button onCLick={handleBadClick} text='bad'/>
-        
-*/
 const DisplayHeader = ({text}) => (
     <>
         <h1>{text}</h1>
     </>
 )
-/*
-const DisplayData = ({good, neutral, bad, totGood, totNeutral, totBad}) => (
-    <>
-        <p>{good}{totGood}</p>
-        <p>{neutral}{totNeutral}</p>
-        <p>{bad}{totBad}</p>
-    </>
-)
 
-<DisplayData good='good ' neutral='neutral ' bad='bad ' 
-        totGood={good} totNeutral={neutral} totBad={bad}/>
-*/
+
+const Statistics = ({good, neutral, bad, all}) => {
+    
+    if (all === 0){
+        return (
+            <>
+                <h2>statistics</h2>
+                <p>No feedback given </p>
+            </>
+        )
+    }
+    
+    return (
+        <>
+            <h2>statistics</h2>
+            <p>good {good}</p>
+            <p>neutral {neutral}</p>
+            <p>bad {bad}</p>
+            <p>all {all}</p>
+            <p>average {(1 * good + (-1) * bad) / all}</p>
+            <p>positive {good * 100 / all }%</p>    
+        </>
+    )
+    }
+
 
 
 const App = (props) => {
@@ -37,6 +45,8 @@ const App = (props) => {
   const [good, setGood] = useState(0)
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
+
+  const all = good + neutral + bad 
 
   //here comes the event handlers
   const handleGoodClick = () => setGood(good + 1)
@@ -48,7 +58,8 @@ const App = (props) => {
   const handleBadClick = () => {( setBad(bad + 1))}
   
   // podria modularizarlas, haciendo una sola funcion que incremente en 1 el parametro recivido...
-  //popdria llamarse handleClick(value) pero deberia devolver otra funcion
+  //podria llamarse handleClick(value) pero deberia devolver otra funcion
+
 
   return (
     <div>
@@ -56,10 +67,7 @@ const App = (props) => {
         <Button onClick={handleGoodClick} text='good'/>
         <Button onClick={handleNeutralClick} text='neutral'/>
         <Button onClick={handleBadClick} text='bad'/>
-        <DisplayHeader text='statistics'/>
-        <p>good {good}</p>
-        <p>neutral {neutral}</p>
-        <p>bad {bad}</p>
+        <Statistics good={good} neutral={neutral} bad={bad} all={all}/>
     </div>
   )
 }
