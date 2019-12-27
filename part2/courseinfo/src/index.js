@@ -9,6 +9,7 @@ const Part = ({name, exercises}) => {
 
 const Content = ({parts}) => {
 
+
     const cont = () => 
         parts.map(part => {
             
@@ -19,9 +20,16 @@ const Content = ({parts}) => {
             }
         )
 
+    const totalExercises = () => 
+        parts.reduce ( (a, b) =>{             
+                return a + b.exercises
+            },0 
+        )
+
     return  (     
         <>
                 {cont()}
+                <p>total of {totalExercises()} exercises</p>
         </>
     )
 }
