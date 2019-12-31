@@ -4,8 +4,6 @@ const Person = ({name}) =>(
   <li>{name}</li>
 )
 
-
-
 const App = () => {
   const [ persons, setPersons] = useState([
     { name: 'Arto Hellas' }
@@ -18,14 +16,20 @@ const App = () => {
           name={person.name} 
           /> 
   )
-  
+
   
   const addPhone = (event) => {
     event.preventDefault();
-    const personObject = {
-      name: newName
+    
+    if (! persons.map((person) => person.name).includes(newName)){
+      
+      const personObject = {
+        name: newName
+      }
+      setPersons(persons.concat(personObject))  
+    }else {
+      window.alert(`${newName} already exists in your phonebook.`);
     }
-    setPersons(persons.concat(personObject))
     setNewName('')    
   }
 
