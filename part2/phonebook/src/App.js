@@ -7,13 +7,22 @@ const Contact = ({name, number}) =>(
 )
 
 const App = () => {
-  const [ persons, setPersons] = useState([]) 
+  const [ persons, setPersons] = useState([
+    { name: 'Arto Hellas', number: '040-123456' },
+    { name: 'Ada Lovelace', number: '39-44-5323523' },
+    { name: 'Dan Abramov', number: '12-43-234345' },
+    { name: 'Mary Poppendieck', number: '39-23-6423122' }]
+  ) 
   const [ newName, setNewName ] = useState('Enter a name')
   const [ newPhone, setNewPhone] = useState('Enter a phone number')
+  const [ newFilter, setNewFilter] = useState('Enter a name to filter')
+  const [ show, setShow] = useState('')
 
-
+  var personsToShow = (show === '') 
+      ? persons 
+      : persons.filter(person => person.name.toUpperCase().startsWith(show.toUpperCase()));
   
-  const displayNames = () => persons.map(person =>   
+  const displayNames = () => personsToShow.map(person =>   
         <Contact 
           key={person.name}
           name={person.name} 
@@ -55,10 +64,24 @@ const App = () => {
     setNewPhone(event.target.value);
   }
 
+  const handleFilterChange = (event) => {
+    setNewFilter(event.target.value);
+    setShow(event.target.value);
+    //personsToShow = persons.filter(person => person.name.startsWith(show))
+    //console.log(show);
+    // console.log(persons);
+    // console.log(personsToShow);
+  }
+
+  console.log("Persons:", persons);
+  console.log(show);  
+  console.log("Persons to show:", personsToShow);
   
   return (
     <div>
       <h2>Phonebook</h2>
+        filter names with: <input value={newFilter} onChange={handleFilterChange} />
+      <h2>add a new</h2>
       <form onSubmit={addPerson}>
         <div>
           name: <input value={newName} onChange={handleNameChange}/>  
