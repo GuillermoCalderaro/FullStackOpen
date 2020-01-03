@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
+import Persons from './components/Persons'
+import Person from './components/Person'
+import Filter from './components/Filter'
+import PersonForm from './components/PersonForm'
 
 
-//this component displays a persons name and phone number
-const Contact = ({name, number}) =>(
-  <li>{name} {number}</li>
-)
 
 const App = () => {
   const [ persons, setPersons] = useState([
@@ -18,19 +18,21 @@ const App = () => {
   const [ newFilter, setNewFilter] = useState('Enter a name to filter')
   const [ show, setShow] = useState('')
 
+
+  //updates the elements in the personsToShow array every time the aplication render its content
   var personsToShow = (show === '') 
       ? persons 
       : persons.filter(person => person.name.toUpperCase().startsWith(show.toUpperCase()));
-  
+
+
+      
   const displayNames = () => personsToShow.map(person =>   
-        <Contact 
-          key={person.name}
-          name={person.name} 
-          number={person.number}
-          /> 
+    <Person 
+      key={person.name}
+      name={person.name} 
+      number={person.number}
+      /> 
   )
-
-
   //this function adds a person with its phone number to the phonebook
   //it validates that the persons name is not empty
   //and that it hasn`t been already register
@@ -64,42 +66,26 @@ const App = () => {
     setNewPhone(event.target.value);
   }
 
+  //this function refresh the filter field and 
+  //with each modification it modifies the show variable
   const handleFilterChange = (event) => {
     setNewFilter(event.target.value);
     setShow(event.target.value);
-    //personsToShow = persons.filter(person => person.name.startsWith(show))
-    //console.log(show);
-    // console.log(persons);
-    // console.log(personsToShow);
   }
-
-  console.log("Persons:", persons);
-  console.log(show);  
-  console.log("Persons to show:", personsToShow);
   
   return (
     <div>
       <h2>Phonebook</h2>
-        filter names with: <input value={newFilter} onChange={handleFilterChange} />
-      <h2>add a new</h2>
-      <form onSubmit={addPerson}>
-        <div>
-          name: <input value={newName} onChange={handleNameChange}/>  
-        </div>
-        <br />
-        <div>
-          number: <input value={newPhone} onChange={handleNumberChange}/>
-        </div>
-        <div>
-          <button type="submit" >add</button>
-        </div>
-      </form>
-      <h2>Numbers</h2>
-      <ul>
-        {displayNames()}
-      </ul>
-      
+      <Filter newFilter={newFilter} handleFilterChange={handleFilterChange}/>
+      <h3>add a new</h3>
+      <PersonForm persons={persons} addPerson={addPerson}
+                  newName={newName} handleNameChange={handleNameChange}
+                  newPhone={newPhone} handleNumberChange={handleNumberChange}
+                  setPersons={setPersons} setNewName={setNewName} setNewPhone={setNewPhone}/>
+      <h3>Numbers</h3>
+      <Persons personsToShow={personsToShow} displayNames={displayNames}/>
     </div>
   )
 }
+
 export default App;
