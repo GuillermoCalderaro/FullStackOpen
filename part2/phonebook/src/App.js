@@ -53,16 +53,20 @@ const App = () => {
           name: newName,
           number: newPhone
         }
-        setPersons(persons.concat(personObject))  
+        axios
+        .post('http://localhost:3001/persons', personObject)
+        .then(response =>{
+          setPersons(persons.concat(response.data))
+        })
       }else {
         window.alert(`${newName} already exists in your phonebook.`);
       } 
     }else {
       window.alert(`The name field must contain at least one character`);
     }
-    setNewName('')    
-    setNewPhone('')
-  }
+      setNewName('')    
+      setNewPhone('')
+      }
 
   //this function refresh the name field with its content
   const handleNameChange = (event) => {
