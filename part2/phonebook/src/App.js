@@ -3,21 +3,18 @@ import Persons from './components/Persons'
 import Person from './components/Person'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
-import axios from 'axios'
+import personsService from './services/personas'
 
 
 const App = () => {
 
 
-  const hook = () => {
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        setPersons(response.data)
-      })
-  }
+  useEffect ( () => {
+    personsService.getAll()
+    .then(list => setPersons(list))
+}, [])
 
-  useEffect(hook, []);
+ 
 
 
   const [ persons, setPersons] = useState([]) 
@@ -33,13 +30,15 @@ const App = () => {
       : persons.filter(person => person.name.toUpperCase().startsWith(show.toUpperCase()));
 
 
-      
-  const displayNames = () => personsToShow.map(person =>   
+  
+  //guess wath this function does...
+  const displayNames = () => personsToShow.map(person => {   
+    return (
     <Person 
-      key={person.name}
+      key={person.id}
       name={person.name} 
       number={person.number}
-      /> 
+    /> )}
   )
   //this function adds a person with its phone number to the phonebook
   //it validates that the persons name is not empty
@@ -52,12 +51,10 @@ const App = () => {
         const personObject = {
           name: newName,
           number: newPhone
-        }
-        axios
-        .post('http://localhost:3001/persons', personObject)
-        .then(response =>{
-          setPersons(persons.concat(response.data))
-        })
+        }                
+        personsService.create(personObject)
+        .then(response =>{ 
+        setPersons(persons.concat(response))})
       }else {
         window.alert(`${newName} already exists in your phonebook.`);
       } 
@@ -85,6 +82,7 @@ const App = () => {
     setShow(event.target.value);
   }
   
+
   return (
     <div>
       <h2>Phonebook</h2>
