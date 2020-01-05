@@ -4,7 +4,7 @@ import Person from './components/Person'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import personsService from './services/personas'
-
+import Notification from './components/notification'
 
 const App = () => {
 
@@ -14,14 +14,12 @@ const App = () => {
     .then(list => setPersons(list))
 }, [])
 
- 
-
-
   const [ persons, setPersons] = useState([]) 
   const [ newName, setNewName ] = useState('Enter a name')
   const [ newPhone, setNewPhone] = useState('Enter a phone number')
   const [ newFilter, setNewFilter] = useState('Enter a name to filter')
   const [ show, setShow] = useState('')
+  const [message, setMessage] = useState(null)
 
 
   //updates the elements in the personsToShow array every time the aplication render its content
@@ -55,6 +53,12 @@ const App = () => {
         personsService.create(personObject)
         .then(response =>{ 
         setPersons(persons.concat(response))})
+        setMessage(
+          `${personObject.name}' was added to the server`
+        )
+        setTimeout(() => {
+          setMessage(null)
+        }, 5000)
       }else {
         window.alert(`${newName} already exists in your phonebook.`);
       } 
@@ -88,6 +92,7 @@ const App = () => {
       <h2>Phonebook</h2>
       <Filter newFilter={newFilter} handleFilterChange={handleFilterChange}/>
       <h3>add a new</h3>
+      <Notification message={message} />
       <PersonForm persons={persons} addPerson={addPerson}
                   newName={newName} handleNameChange={handleNameChange}
                   newPhone={newPhone} handleNumberChange={handleNumberChange}
