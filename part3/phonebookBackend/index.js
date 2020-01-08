@@ -1,0 +1,54 @@
+const express = require('express');
+const app = express();
+
+let persons = [
+    {
+      "name": "Arto Hellas",
+      "number": "040-123456",
+      "id": 1
+    },
+    {
+      "name": "Ada Lovelace",
+      "number": "39-44-5323523",
+      "id": 2
+    },
+    {
+      "name": "Dan Abramov",
+      "number": "12-43-234345",
+      "id": 3
+    },
+    {
+      "name": "Mary Poppendieck",
+      "number": "39-23-6423122",
+      "id": 4
+    },
+    {
+      "name": "Guille",
+      "number": "123",
+      "id": 5
+    },
+    {
+      "name": "Giovanni",
+      "number": "321",
+      "id": 6
+    },
+    {
+      "name": "Sofia",
+      "number": "45454545",
+      "id": 7
+    },
+    {
+      "name": "Gacelita",
+      "number": "321321",
+      "id": 8
+    }
+  ]
+
+app.get('/api/persons', (req, res) => {
+  res.json(persons);
+})
+
+const port = 3001;
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+})
