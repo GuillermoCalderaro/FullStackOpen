@@ -73,10 +73,21 @@ app.delete('/api/persons/:id', (req, res) => {
 
 app.post('/api/persons', (req, res) => {
   const person = req.body;
+  if (!(person.name && person.number)) {
+    return res.status(404).json({
+      error: 'a name and a number should be provided'
+    });
+  }
+  if (persons.find(each => each.name === person.name)) {
+    return res.status(404).json({
+      error: 'the person\'s name must be unique'
+    });
+  }
+  
   person.id = Math.random() * 100;
   persons = persons.concat(person);	
-  console.log(person);
   res.send(persons);
+
 })
 
 const port = 3001;
