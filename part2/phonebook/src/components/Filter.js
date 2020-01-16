@@ -2,7 +2,8 @@ import React from 'react'
 
 const Filter = ({newFilter, handleFilterChange}) => (
     <>
-    filter names with: <input value={newFilter} onChange={handleFilterChange} />
+      <p>filter names with: </p>
+      <input value={newFilter} onChange={handleFilterChange} />
     </>
   )
 

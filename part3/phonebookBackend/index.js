@@ -88,7 +88,7 @@ app.post('/api/persons', (req, res) => {
     });
   }
   
-  person.id = Math.random() * 100;
+  person.id = Math.random() * 1000;
   persons = persons.concat(person);	
   res.send(persons);
 
