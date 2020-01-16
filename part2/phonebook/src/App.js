@@ -52,9 +52,10 @@ const App = () => {
         }                
         personsService.create(personObject)
         .then(response =>{ 
-        setPersons(persons.concat(response))})
+          setPersons(response)
+      })
         setMessage(
-          `${personObject.name}' was added to the server`
+          `${personObject.name} was added to the server`
         )
         setTimeout(() => {
           setMessage(null)
