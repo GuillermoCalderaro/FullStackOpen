@@ -4,6 +4,27 @@ const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const cors = require('cors');
 
+const mongoose = require('mongoose');
+
+const url ='mongodb+srv://guille_calde:Chichi@cluster0-aw0q2.mongodb.net/phonebook-app?retryWrites=true&w=majority'
+
+mongoose.connect(url, {useNewUrlParser: true});
+
+const personSchema = new mongoose.Schema({
+  name: String,
+  number: String,
+})
+
+const Person = mongoose.model('Person', personSchema);
+
+personSchema.set('toJSON', {
+  transform: (document, returnedObject) => {
+    returnedObject.id = returnedObject._id.toString()
+    delete returnedObject._id
+    delete returnedObject.__v
+  }
+})
+
 app.use(express.static('build'));
 
 app.use(cors());
@@ -12,36 +33,11 @@ app.use(bodyParser.json());
 
 app.use(morgan('tiny'));
 
-let persons = [
-    {
-      "name": "Arto Hellas",
-      "number": "040-123456",
-      "id": 1
-    },
-    {
-      "name": "Ada Lovelace",
-      "number": "39-44-5323523",
-      "id": 2
-    },
-    {
-      "name": "Dan Abramov",
-      "number": "12-43-234345",
-      "id": 3
-    },
-    {
-      "name": "Mary Poppendieck",
-      "number": "39-23-6423122",
-      "id": 4
-    },
-    {
-      "name": "Guille",
-      "number": "123",
-      "id": 5
-    }
-  ]
 
 app.get('/api/persons', (req, res) => {
-  res.json(persons);
+  Person.find({}).then( persons =>res.json(persons.map(person =>
+    person.toJSON()
+  )))	  
 })
 
 app.get('/api/persons/:id', (req, res) => {
